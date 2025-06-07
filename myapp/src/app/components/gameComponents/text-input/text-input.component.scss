@@ -1,0 +1,11 @@
+.inputContainer {
+  margin: auto;
+  display: block;
+  margin-top: 5px;
+  width: 500px;
+}
+
+.inputContainer.error {
+  outline-color: red;
+  border-color: red;
+}

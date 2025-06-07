@@ -1,0 +1,45 @@
+version: "3"
+services:
+  database:
+    build: ../database
+    container_name: database
+    restart: always
+    command: --init-file /database/init.sql
+    ports:
+      - "3306:3306"
+    env_file: .env
+    volumes:
+      - ../database:/var/lib/sql
+    healthcheck:
+      test: mysql -u root --password=${MYSQL_ROOT_PASSWORD} -e "SHOW DATABASES"
+      interval: 5s
+      retries: 10
+  backend:
+    build: ../backend
+    container_name: backend
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./certbot/conf/:/etc/letsencrypt/:ro
+    depends_on:
+      database:
+        condition: service_healthy
+  webserver:
+    image: nginx:latest
+    container_name: webserver
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+      - ./certbot/conf/:/etc/letsencrypt/:ro
+      - ./certbot/www/:/var/www/certbot/:ro
+      - ../frontend/:/frontend/:ro
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw

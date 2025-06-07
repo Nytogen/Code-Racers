@@ -1,0 +1,59 @@
+/* Originally from https://www.w3schools.com/howto/howto_css_overlay.asp */
+
+#overlay {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    flex-direction: column;
+  }
+  
+.container{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.containerItem{
+    border-style: groove;
+    margin: 5px;
+    padding: 10px;
+}
+
+.playerProgressContainer{
+    max-width: 750px;
+    margin: 2em auto;   
+    border-style: groove;     
+}
+
+.playerProgresses{
+    margin: 2px;
+    padding: 2px;
+}
+
+.textContainer{
+    max-width: 750px;
+    margin: 5px auto 0px auto;
+}
+
+.playerInput{
+    border-style:groove;
+    margin:  auto;
+    text-align: center;
+    height: 2em;
+}
+
+#spectatorMessage{
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 2em;
+}

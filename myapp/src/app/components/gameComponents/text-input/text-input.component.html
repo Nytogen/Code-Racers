@@ -1,0 +1,16 @@
+<input
+  autofocus
+  type="inputText"
+  name="inputText"
+  id="inputText"
+  placeholder="Type Now!"
+  [(ngModel)]="inputText"
+  (keydown.space)="checkWord()"
+  (keyup.space)="emptyClear()"
+  class="inputContainer"
+  [disabled]="isDisabled"
+  (keydown)="updateTypedText()"
+  (keyup)="updateTypedText()"
+  [ngClass]="{ error: showError }"
+  [@shake]="shake"
+/>

@@ -1,0 +1,74 @@
+<div *ngIf="isPlayer">
+  <div class="playerProgressContainer">
+    <div class="playerProgresses">
+      <app-progress-bar
+        [progress]="this.playerdata.progress"
+        [name]="this.playerName"
+      >
+      </app-progress-bar>
+    </div>
+
+    <div
+      *ngFor="let data of playerProgress | keyvalue"
+      class="playerProgresses"
+    >
+      <app-progress-bar
+        [progress]="playerProgress.get(data.key).progress"
+        [name]="playerProgress.get(data.key).name"
+      >
+      </app-progress-bar>
+    </div>
+  </div>
+
+  <div class="textContainer">
+    <app-game-text
+      [remainingText]="this.playerdata.remainingText"
+      [correctText]="this.playerdata.correctText"
+    >
+    </app-game-text>
+
+    <app-text-input
+      (correctWordEvent)="updateCorrectText($any($event))"
+      (keyStrokeEvent)="keyPressAsPlayer($any($event))"
+      [currentText]="this.playerdata.remainingText"
+      [isDisabled]="haveWinner"
+    >
+    </app-text-input>
+  </div>
+</div>
+
+<div *ngIf="!isPlayer">
+  <div id="spectatorMessage">
+    <h1>Spectator Mode</h1>
+  </div>
+  <div class="container">
+    <div *ngFor="let data of playerProgress | keyvalue" class="containerItem">
+      <app-progress-bar
+        [progress]="playerProgress.get(data.key).progress"
+        [name]="playerProgress.get(data.key).name"
+      >
+      </app-progress-bar>
+
+      <app-game-text
+        [remainingText]="playerProgress.get(data.key).remainingText"
+        [correctText]="playerProgress.get(data.key).correctText"
+      >
+      </app-game-text>
+
+      <div class="playerInput">
+        {{ playerProgress.get(data.key).currTexted }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="overlay" [ngStyle]="{ display: overlayText != '' ? 'flex' : 'none' }">
+  <h1>{{ overlayText }}</h1>
+  <button
+    type="button"
+    class="btn btn-light btn-lg mt-3"
+    (click)="redirectToLobbyBrowser()"
+  >
+    Back to lobby browser
+  </button>
+</div>

@@ -1,0 +1,95 @@
+<app-header (linkClicked)="disconnect()"></app-header>
+<app-redirect-button
+        class="ms-3"
+        label="Leave lobby"
+        redirectTo="lobbyBrowser"
+/>
+<div class="text-center">
+  <h1 class="pb-1">{{ lobby.lobby_name }}</h1>
+</div>
+<div class="container py-4 text-center">
+  <div class="player_container">
+    <div class="row align-items-md-stretch text-center">
+      <div class="col">
+        <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+          <h2>Players</h2>
+          <div *ngFor="let player of lobby.players" class="player">
+            <span 
+              id="players_badge"
+              [ngClass]="player.session_id == lobby.owner_id ? 
+              'badge text-bg-warning mx-auto' : 'badge text-bg-info mx-auto'"
+            >
+              {{ lobby.owner_id == player.session_id ? 'Leader' : 'Player' }}
+            </span>
+            {{ player.display_name }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex py-3">
+    <app-button
+    id="join_players_button"
+    label="Join"
+    (btnClick)="joinPlayers()"
+    [disabled]="!dataLoaded || lobby.players.length === 4"
+    [ngStyle]="{
+      visibility:
+        !isSpectator() || !dataLoaded || lobby.players.length === 4
+          ? 'hidden'
+          : 'visible'
+    }"
+    [disabled]="!isSpectator() || !dataLoaded || lobby.players.length === 4"
+  />
+  </div>
+</div>
+
+<div class="container py-4">
+  <div class="spectator_container">
+    <div class="row align-items-md-stretch text-center">
+      <div class="col">
+        <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+          <h2>Spectators</h2>
+          <div *ngFor="let spectator of lobby.spectators" class="spectator">
+            <span 
+              id="spectators_badge"
+              [ngClass]="spectator.session_id == lobby.owner_id ? 
+              'badge text-bg-warning mx-auto' : 'badge text-bg-info mx-auto'"
+            >
+              {{ lobby.owner_id == spectator.session_id ? 'Leader' : 'Spectator' }}
+            </span>
+            {{ spectator.display_name }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-between py-3">
+    <app-button
+    id="join_spectator_button"
+    label="Join"
+    (btnClick)="joinSpectator()"
+    [ngStyle]="{
+      visibility: !isPlayer() || !dataLoaded ? 'hidden' : 'visible'
+    }"
+    [disabled]="!isPlayer() || !dataLoaded"
+  />
+  <app-button
+    id="start_button"
+    label="Start"
+    (btnClick)="startGame()"
+    [ngStyle]="{ visibility: !isOwner() || !dataLoaded ? 'hidden' : 'visible' }"
+    [disabled]="!isOwner() || !dataLoaded"
+  />
+  </div>
+  
+</div>
+
+<div id="overlay" [ngStyle]="{ display: overlayText != '' ? 'flex' : 'none' }">
+  <h1>{{ overlayText }}</h1>
+  <button type="button" class="btn btn-light btn-lg mt-3" 
+    (click)="redirectToLobbyBrowser()"
+  >
+    Back to lobby browser
+  </button>
+</div>

@@ -1,0 +1,53 @@
+<app-header></app-header>
+<div class="lobbiesContainer">
+  <div class="row text-center mx-auto">
+    <h1>Lobby Browser</h1>
+  </div>
+  <div
+    class="w-25 col flex-md-row p-2 gap-4 py-md-4 mx-auto align-items-center"
+  >
+    <div class="list-group">
+      <div
+        class="list-group-item list-group-item-action gap-3 py-3"
+        *ngFor="let lobby of lobbies"
+      >
+        <div class="row">
+          <div class="col">
+            <app-redirect-button
+              class="lobby flex-grow-1"
+              label="{{ lobby.lobby_name }}"
+              redirectTo="{{ 'lobby/' + lobby.lobby_id }}"
+            />
+          </div>
+          <div class="col-3">
+            <small class="my-auto">
+              Players: <br />{{ lobby.numOfPlayers }}/{{ MAX_PLAYERS }}
+            </small>
+          </div>
+          <div class="col-3">
+            <small class="my-auto">
+              Spectators: <br />{{ lobby.numOfSpectators }}/{{ MAX_SPECTATORS }}
+            </small>
+          </div>
+        </div>
+        <div class="row">
+          <small class="my-auto">
+            Status: {{ lobby.gamestate === 0 ? "Pre-Game" : "In-Progress" }}
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between py-3">
+      <app-button
+        class="refreshButton"
+        label="Refresh"
+        (btnClick)="getLobbies()"
+      />
+      <app-button
+        class="createButton"
+        label="Create"
+        (btnClick)="createLobby()"
+      />
+    </div>
+  </div>
+</div>
